@@ -1,4 +1,8 @@
 const Course = ({ course }) => {
+  const total = course.parts.reduce((total, part) => {
+    return (total += part.exercises);
+  }, 0);
+
   return (
     <div>
       <h1>{course.name}</h1>
@@ -7,6 +11,9 @@ const Course = ({ course }) => {
           {part.name} {part.exercises}
         </p>
       ))}
+      <p>
+        <b>total of {total} exercises</b>
+      </p>
     </div>
   );
 };
