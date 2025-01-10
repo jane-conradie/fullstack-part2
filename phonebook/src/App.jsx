@@ -5,6 +5,8 @@ import Search from "./components/Search";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 
+import peopleService from "./services/people";
+
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
@@ -52,9 +54,11 @@ const App = () => {
       return;
     }
 
-    setPersons(persons.concat(person));
-    setNewName("");
-    setNewNumber("");
+    peopleService.create(person).then((newPerson) => {
+      setPersons(persons.concat(newPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   return (
