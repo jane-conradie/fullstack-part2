@@ -1,6 +1,6 @@
 import Person from "./Person";
 
-const Persons = ({ searchString, persons }) => {
+const Persons = ({ searchString, persons, deletePerson }) => {
   const results =
     searchString != ""
       ? persons.filter((person) =>
@@ -9,7 +9,13 @@ const Persons = ({ searchString, persons }) => {
       : persons;
 
   return results.map((person) => (
-    <Person key={person.name} name={person.name} number={person.number} />
+    <Person
+      key={person.name}
+      name={person.name}
+      number={person.number}
+      id={person.id}
+      deletePerson={deletePerson}
+    />
   ));
 };
 
