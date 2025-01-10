@@ -44,21 +44,34 @@ const App = () => {
     const person = {
       name: newName,
       number: newNumber,
+      id: persons[persons.length - 1].id + 1,
     };
 
     if (
-      persons.filter((p) => JSON.stringify(p) === JSON.stringify(person))
-        .length > 0
+      persons.filter(
+        (p) => JSON.stringify(p.name) === JSON.stringify(person.name)
+      ).length > 0
     ) {
-      alert(`${person.name} is already added to phonebook`);
-      return;
-    }
+      if (
+        window.confirm(
+          `${person.name} is already added to phonebook, replace the old number with the new one?`
+        )
+      ) {
+        // get person id
+        const id = persons.find((p) => person.name === p.name).id;
 
-    peopleService.create(person).then((newPerson) => {
-      setPersons(persons.concat(newPerson));
-      setNewName("");
-      setNewNumber("");
-    });
+        // update person
+        peopleService.update(id, person).then((updatedPerson) => {
+          setPersons(persons.map((p) => (p.id === id ? updatedPerson : p)));
+        });
+      }
+    } else {
+      peopleService.create(person).then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+    }
   };
 
   const deletePerson = (id, name) => {
